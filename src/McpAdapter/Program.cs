@@ -1,3 +1,5 @@
+using ModelContextProtocol.Server;
+
 namespace McpAdapter
 {
     public class Program
@@ -5,10 +7,13 @@ namespace McpAdapter
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddMcpServer()
+                .WithHttpTransport()
+                .WithToolsFromAssembly();
+
             var app = builder.Build();
 
-            app.MapGet("/", () => "Hello World!");
-
+            app.MapMcp();
             app.Run();
         }
     }
